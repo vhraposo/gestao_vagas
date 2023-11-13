@@ -24,7 +24,7 @@ public class CandidateEntity {
     private UUID id;
     private String name;
 
-    @NotBlank
+    @NotBlank()
     @Pattern(regexp = "\\S+", message = "O campo [username] não deve conter espaço.")
     private String username;
 
