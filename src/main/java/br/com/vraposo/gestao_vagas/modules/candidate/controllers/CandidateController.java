@@ -38,15 +38,15 @@ public class CandidateController {
 }
 
     @GetMapping("/")
-    @PreAuthorize("hasRole('candidate')")
+    @PreAuthorize("hasRole('CANDIDATE')")
     public ResponseEntity<Object> get(HttpServletRequest request) {
 
         var idCandidate = request.getAttribute("candidate_id");
         try {
                 var profile = this.profileCandidateUseCase
-                                .execute(UUID.fromString(idCandidate.toString()));
+                    .execute(UUID.fromString(idCandidate.toString()));
                 return ResponseEntity.ok().body(profile);
-        } catch (Exception e) {
+              } catch (Exception e) {
                 return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

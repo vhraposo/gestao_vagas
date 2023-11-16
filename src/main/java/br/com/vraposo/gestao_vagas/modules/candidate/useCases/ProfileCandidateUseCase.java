@@ -8,14 +8,13 @@ import org.springframework.stereotype.Service;
 
 import br.com.vraposo.gestao_vagas.modules.candidate.CandidateRepository;
 import br.com.vraposo.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO;
-import br.com.vraposo.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO.ProfileCandidateResponseDTOBuilder;
 
 @Service
 public class ProfileCandidateUseCase {
   @Autowired
   private CandidateRepository candidateRepository;
 
-  public ProfileCandidateResponseDTOBuilder execute(UUID idCandidate) {
+  public ProfileCandidateResponseDTO execute(UUID idCandidate) {
     var candidate = this.candidateRepository.findById(idCandidate)
         .orElseThrow(() -> {
           throw new UsernameNotFoundException("User not found");
@@ -26,8 +25,8 @@ public class ProfileCandidateUseCase {
         .username(candidate.getUsername())
         .email(candidate.getEmail())
         .name(candidate.getName())
-        .id(candidate.getId());
-
+        .id(candidate.getId())
+        .build();
     return candidateDTO;
   }
 }

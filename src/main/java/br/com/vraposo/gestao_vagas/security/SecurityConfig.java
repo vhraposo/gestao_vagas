@@ -21,28 +21,24 @@ public class SecurityConfig {
     private SecurityCandidateFilter securityCandidateFilter;
 
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/candidate/").permitAll()
-                            .requestMatchers("/company/").permitAll()
-                            .requestMatchers("/company/auth").permitAll()
-                            .requestMatchers("/candidate/auth").permitAll();
+  @Bean
+  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> {
+          auth.requestMatchers("/candidate/").permitAll()
+              .requestMatchers("/company/").permitAll()
+              .requestMatchers("/company/auth").permitAll()
+              .requestMatchers("/candidate/auth").permitAll();
 
-                    auth.anyRequest().authenticated();
+          auth.anyRequest().authenticated();
+        })
+        .addFilterBefore(securityCandidateFilter, BasicAuthenticationFilter.class)
+        .addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
+    return http.build();
+  }
 
-                })
-                .addFilterBefore(securityCandidateFilter, BasicAuthenticationFilter.class)
-                .addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
-
-        ;
-        return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }
